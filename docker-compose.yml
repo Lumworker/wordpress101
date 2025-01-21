@@ -4,6 +4,8 @@ services:
     platform: linux/amd64
     ports:
       - "8080:80"
+    volumes:
+      - ./php.ini:/usr/local/etc/php/conf.d/custom-php.ini
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: root
