@@ -1,0 +1,134 @@
+
+# 📦 การตั้งค่า WordPress บน Docker 🐳
+
+## 📝 รายการสิ่งที่ต้องทำ
+
+1. **ติดตั้ง Docker** 🐋
+   - ดาวน์โหลดและติดตั้ง Docker Desktop จาก [ลิงก์นี้](https://www.docker.com/products/docker-desktop)
+
+2. **สร้างไฟล์ `docker-compose.yml`** 📝
+   - สร้างไฟล์ `docker-compose.yml` ในโฟลเดอร์ที่คุณต้องการให้ WordPress ทำงาน
+   - ใส่เนื้อหาดังนี้ในไฟล์ `docker-compose.yml`:
+
+```yaml
+version: '3.1'
+
+``ใส่เนื้อหาดังนี้ในไฟล์ `docker-compose.yml
+services:
+  wordpress:
+    image: wordpress:latest
+    platform: linux/amd64
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: ""  # ไม่มีรหัสผ่าน
+      WORDPRESS_DB_NAME: exampledb
+
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # อนุญาตให้ไม่มีรหัสผ่าน
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ""  # ไม่มีรหัสผ่าน
+
+volumes:
+  wordpress_data:
+  db_data:
+```
+
+- **Explanation**:
+  - `wordpress` service: Runs the WordPress container and exposes it on port 8080.
+  - `db` service: Runs MySQL 5.7 container with an empty password for the root user.
+
+---
+
+## **Step 2: Starting WordPress with Docker**
+To start the WordPress and MySQL containers, run the following command:
+
+```bash
+docker-compose up -d
+```
+
+This will:
+- Download the required Docker images (`wordpress:latest` and `mysql:5.7`).
+- Start the WordPress and MySQL services in the background.
+
+---
+
+## **Step 3: Verifying the Containers**
+After running the command, check the status of the containers with:
+
+```bash
+docker-compose ps
+```
+
+You should see the containers for `wordpress` and `db` running.
+
+To view the logs for each service:
+
+```bash
+docker-compose logs
+```
+
+---
+
+## **Step 4: Accessing WordPress**
+Once the containers are up and running:
+- Open your browser and go to `http://localhost:8080` to access your WordPress site.
+- Log in using the credentials you set up during installation.
+
+---
+
+## **Step 5: Installing Elementor Plugin**
+To install the Elementor plugin:
+
+1. In your WordPress dashboard, go to **Plugins** > **Add New**.
+2. Search for **Elementor**.
+3. Click **Install Now** and then click **Activate**.
+
+---
+
+## **Step 6: Using Elementor for Page Building**
+- Once Elementor is activated, go to **Pages** > **Add New** or edit an existing page.
+- Click on **Edit with Elementor** to start designing your page using the drag-and-drop interface.
+
+---
+
+## **Step 7: Stopping and Removing Containers**
+To stop the containers, run:
+
+```bash
+docker-compose down
+```
+
+If you want to remove the containers and their volumes:
+
+```bash
+docker-compose down --volumes
+```
+
+---
+
+## **Step 8: Verifying Container Status**
+To verify the containers are running:
+
+```bash
+docker ps
+```
+
+This will show you the currently running containers.
+
+---
+
+## **Notes**
+- **Elementor Plugin**: Elementor makes building and designing pages in WordPress much easier with its drag-and-drop editor.
+- If you encounter issues, check Docker logs using `docker-compose logs` or `docker ps` to verify the status of your containers.
+
+---
+
+## **Conclusion**
+This setup allows you to easily run WordPress locally with Docker and use Elementor for designing your site. Enjoy building your WordPress site with Elementor!
